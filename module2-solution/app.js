@@ -12,6 +12,7 @@ function ToBuyController(ShoppingListCheckOffService){
     toBuy.listToBuy = ShoppingListCheckOffService.getList1();
     toBuy.bought = function(itemIndex){
         ShoppingListCheckOffService.removeItem(itemIndex)
+        toBuy.test1 = ShoppingListCheckOffService.isEmptyList1()
     }
 }
 
@@ -43,6 +44,8 @@ function ShoppingListCheckOffService() {
     service.getList2 = function () {
         return list2;
     };
+    service.isEmptyList1 = function () {return list1.length; }
+    service.isEmptyList2 = function () {return list2.length; }
 }
 
 })();
