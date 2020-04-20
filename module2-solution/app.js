@@ -14,12 +14,14 @@ function ToBuyController(ShoppingListCheckOffService){
         ShoppingListCheckOffService.removeItem(itemIndex)
         toBuy.test1 = ShoppingListCheckOffService.isEmptyList1()
     }
+    toBuy.test1 = function (){return ShoppingListCheckOffService.checkList1() === 0};
 }
 
 AlreadyBoughtController.$inject = ['ShoppingListCheckOffService'];
 function AlreadyBoughtController(ShoppingListCheckOffService) {
     var bought = this;
     bought.listBought = ShoppingListCheckOffService.getList2();
+    bought.test2 = function (){return ShoppingListCheckOffService.checkList2() === 0};
 }
 
 function ShoppingListCheckOffService() {
@@ -44,8 +46,8 @@ function ShoppingListCheckOffService() {
     service.getList2 = function () {
         return list2;
     };
-    service.isEmptyList1 = function () {return list1.length; }
-    service.isEmptyList2 = function () {return list2.length; }
+    service.checkList1 = function () {return list1.length; }
+    service.checkList2 = function () {return list2.length; }
 }
 
 })();
