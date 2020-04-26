@@ -3,71 +3,44 @@
 
 angular.module('NarrowItDownApp', [])
 .controller('NarrowItDownController', NarrowItDownController)
-.service('MenuSearchService', MenuSearchService);
+.service('MenuSearchService', MenuSearchService)
+.directive('foundItems', FoundItemsDirective);
+
+function FoundItemsDirective() {
+  var ddo = {
+    templateUrl: 'list.html',
+    scope: {
+      foundItems: '<'
+    },
+    controller: NarrowItDownController,
+    controllerAs: 'controller',
+    bindToController: true
+  };
+  return ddo;
+}
 
 
 NarrowItDownController.$inject = ['MenuSearchService'];
 function NarrowItDownController(MenuSearchService) {
   var controller = this;
   controller.searchTerm = "";
+  
 
   controller.search = function () {
     var promise = MenuSearchService.getMatchedMenuItems(controller.searchTerm);
     promise.then(function (response) {
-      console.log("a"+response)
+      controller.found = response
+      console.log(controller.found)
     })
     .catch(function (error) {
-      console.log("Something went terribly wrong." + error);
+      console.log("Something went terribly wrong.");
     });
   }
-  
-
-/*   promise.then(function (response) {
-    menu.categories = response.data;
-  })
-  .catch(function (error) {
-    console.log("Something went terribly wrong.");
-  });
-
-  menu.logMenuItems = function (shortName) {
-    var promise = MenuSearchService.getMenuForCategory(shortName);
-
-    promise.then(function (response) {
-      console.log(response.data);
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-  }; */
-
 }
-
 
 MenuSearchService.$inject = ['$http'];
 function MenuSearchService($http) {
   var service = this;
-
-  /* service.getMenuCategories = function () {
-    var response = $http({
-      method: "GET",
-      url: (ApiBasePath + "/categories.json")
-    });
-
-    return response;
-  };
- */
-
-/*   service.getMenuForCategory = function (shortName) {
-    var response = $http({
-      method: "GET",
-      url: (ApiBasePath + "/menu_items.json"),
-      params: {
-        category: shortName
-      }
-    });
-
-    return response;
-  }; */
 
   service.getMatchedMenuItems = function (searchTerm){
     return $http({
@@ -80,11 +53,9 @@ function MenuSearchService($http) {
           var str = result.data.menu_items[i].description;
           if(str.includes(searchTerm)) {foundItems.push(result.data.menu_items[i])}
         }
-      console.log(foundItems)
       return foundItems;
   });
   }
-
 }
 
 })();
