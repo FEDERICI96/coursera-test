@@ -17,7 +17,7 @@ function NarrowItDownController(MenuSearchService) {
       console.log("a"+response)
     })
     .catch(function (error) {
-      console.log("Something went terribly wrong.");
+      console.log("Something went terribly wrong." + error);
     });
   }
   
@@ -72,16 +72,16 @@ function MenuSearchService($http) {
   service.getMatchedMenuItems = function (searchTerm){
     return $http({
       method: "GET",
-      url: ("https://davids-restaurant.herokuapp.com/menu_items.json"),
-      params: {
-        description: searchTerm
-      }
+      url: ("https://davids-restaurant.herokuapp.com/menu_items.json")
     }).then(function (result) {
-      // process result and only keep items that match
-      //var foundItems...
-      console.log(result);
-      // return processed items
-      //return foundItems;
+      var foundItems = []
+      for (var i=0;i < result.data.menu_items.length;i++)
+        {
+          var str = result.data.menu_items[i].description;
+          if(str.includes(searchTerm)) {foundItems.push(result.data.menu_items[i])}
+        }
+      console.log(foundItems)
+      return foundItems;
   });
   }
 
