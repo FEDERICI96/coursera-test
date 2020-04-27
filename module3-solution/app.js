@@ -20,7 +20,12 @@ function FoundItemsDirective() {
   return ddo;
 }
 
-function FoundItemsDirectiveController(){var controller = this}
+function FoundItemsDirectiveController(){
+  var controller = this
+  controller.check = function(){
+    if (controller.found.length == 0) {return true} else {return false}
+  }
+}
 
 
 NarrowItDownController.$inject = ['MenuSearchService'];
@@ -28,8 +33,11 @@ function NarrowItDownController(MenuSearchService) {
   var controller = this;
   controller.searchTerm = "";
   
+  
 
   controller.search = function () {
+    if (controller.searchTerm == "") {controller.found=[]}
+    else {
     var promise = MenuSearchService.getMatchedMenuItems(controller.searchTerm);
     promise.then(function (response) {
       controller.found = response
@@ -37,7 +45,7 @@ function NarrowItDownController(MenuSearchService) {
     })
     .catch(function (error) {
       console.log("Something went terribly wrong.");
-    });
+    });}
   }
 
   controller.removeItem = function (itemIndex) {
