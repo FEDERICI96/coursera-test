@@ -4,7 +4,7 @@
     angular.module('Prova', [])
     
     .controller('DivController', function ($scope) {
-      $scope.title = "";
+      $scope.title = "coursera-test";
     });
     
     
